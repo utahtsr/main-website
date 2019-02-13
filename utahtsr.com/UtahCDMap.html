@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Utah Community Day Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .marker {
+            background-image: url('https://s3-us-west-2.amazonaws.com/s2provo/roadballMapMarker.png');
+            background-size: contain;
+            width: 38px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .marker:hover {
+            background-image: url('https://s3-us-west-2.amazonaws.com/s2provo/roadballMapMarker.png');
+            background-size: contain;
+            width: 38px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: .75;
+            filter: alpha(opacity=50);
+            background-color: black;
+        }
+
+        .mapboxgl-popup {
+            max-width: 300px;
+            width: auto;
+        }
+
+        .mapboxgl-popup-content {
+
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        .fbevent{
+            color: #3b5998;
+        }
+
+        /*
+        #menu {
+            background: #fff;
+            position: absolute;
+            z-index: 1;
+            top: 10px;
+            right: 10px;
+            border-radius: 3px;
+            width: 120px;
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        #menu a {
+            font-size: 13px;
+            color: #404040;
+            display: block;
+            margin: 0;
+            padding: 0;
+            padding: 10px;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        #menu a:last-child {
+            border: none;
+        }
+
+        #menu a:hover {
+            background-color: #f8f8f8;
+            color: #404040;
+        }
+
+        #menu a.active {
+            background-color: #3887be;
+            color: #ffffff;
+        }
+
+        #menu a.active:hover {
+            background: #3074a4;
+        }
+        */
+
+        h3 {
+            padding-left: 15px;
+            text-align: center
+        }
+
+        p {
+            text-align: left;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.css' type='text/css' />
+    <nav id='menu-ui' class='menu-ui'></nav>
+    <div id='map'></div>
+
+    <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZ29ibHVlYWxsZGF3YXkiLCJhIjoiY2pibnZmZDZ4M284NTJ4cjZld2U4ZTE4NCJ9.0MTFaT1vJhux6AGCxJljeg'; // replace this with your access token
+
+    var bounds = [
+        [-114.311015, 36.782848], // Southwest coordinates
+        [-108.864543, 42.146438]  // Northeast coordinates
+    ];
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/gobluealldaway/cjg9tlzi71zx52snk62r9hkvc', // replace this with your style URL
+	center: [-111.903263, 40.449915],
+	zoom: 8,
+	maxBounds: bounds
+    });
+    // code from the next step will go here
+    map.on('click', function (e) {
+        var features = map.queryRenderedFeatures(e.point, {
+            layers: ['utahcommunitydayevents'] // replace this with the name of the layer
+        });
+
+        if (!features.length) {
+            return;
+        }
+
+        var feature = features[0];
+
+        var status = feature.properties.status;
+        var fbstatus = feature.properties.fbstatus;
+        var popup;
+        if (status == 'Active' && fbstatus == 'Active') {
+            popup = new mapboxgl.Popup({ offset: [0, -15] })
+                .setLngLat(feature.geometry.coordinates)
+                .setHTML('<h3><a target="_blank" href="'+feature.properties.google+'">'+feature.properties.name+'</a>&nbsp;&nbsp;&nbsp;<a href="'+feature.properties.facebook+'" class="fbevent"><i class="fab fa-facebook"></i> event</a></h3><p>Leader(s): '+feature.properties.leader+'</p><p>Time: '+feature.properties.time+'</p><p>Special Notes: '+feature.properties.instructions)
+                //.setHTML('<h3>Ex-Raid Likelihood: 3</h3><p>Gym Name: ' + feature.properties.name + '</p><p>Number of Ex-Raids: ' + feature.properties.numberOfExRaids + '</p><p>Last Ex Raid Date:' + feature.properties.date +'</p>')
+                .setLngLat(feature.geometry.coordinates)
+                .addTo(map);
+        } else if (status == 'Active') {
+            popup = new mapboxgl.Popup({ offset: [0, -15] })
+                .setLngLat(feature.geometry.coordinates)
+                .setHTML('<h3><a target="_blank" href="'+feature.properties.google+'">'+feature.properties.name+'</a></h3><p>Leader(s): '+feature.properties.leader+'</p><p>Time: '+feature.properties.time+'</p><p>Special Notes: '+feature.properties.instructions)
+                .setLngLat(feature.geometry.coordinates)
+                .addTo(map);
+        } else{
+            status = feature.properties.status;
+        }
+        /*else {
+                popup = new mapboxgl.Popup({ offset: [0, -15] })
+                .setLngLat(feature.geometry.coordinates)
+                    .setHTML('<h3>Ex-Raid Likelihood: ' + feature.properties.gym + '</h3><p>Gym Name: ' + feature.properties.name + '</p>')
+                .setLngLat(feature.geometry.coordinates)
+                .addTo(map);
+        }*/
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<url>
+  <loc>https://utahtsr.com/</loc>
+  <lastmod>2018-03-04T00:04:12+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://utahtsr.com/events.html</loc>
+  <lastmod>2018-03-04T05:11:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://utahtsr.com/febevent.html</loc>
+  <lastmod>2018-03-04T05:11:47+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://utahtsr.com/janevent.html</loc>
+  <lastmod>2018-03-04T05:11:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://utahtsr.com/competition.html</loc>
+  <lastmod>2018-03-03T17:53:29+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+</urlset>
